@@ -1504,7 +1504,7 @@ function _emscripten_asm_const_ii(code, a0) {
  return ASM_CONSTS[code](a0);
 }
 STATIC_BASE = GLOBAL_BASE;
-STATICTOP = STATIC_BASE + 3524640;
+STATICTOP = STATIC_BASE + 3524432;
 __ATINIT__.push({
  func: (function() {
   __GLOBAL__sub_I_AccessibilityScriptingClasses_cpp();
@@ -3378,12 +3378,27 @@ __ATINIT__.push({
   ___emscripten_environ_constructor();
  })
 });
-var STATIC_BUMP = 3524640;
+var STATIC_BUMP = 3524432;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 var tempDoublePtr = STATICTOP;
 STATICTOP += 16;
 assert(tempDoublePtr % 8 == 0);
+function _DownloadFile(array, size, fileNamePtr) {
+ var fileName = UTF8ToString(fileNamePtr);
+ var bytes = new Uint8Array(size);
+ for (var i = 0; i < size; i++) {
+  bytes[i] = HEAPU8[array + i];
+ }
+ var blob = new Blob([ bytes ]);
+ var link = document.createElement("a");
+ link.href = window.URL.createObjectURL(blob);
+ link.download = fileName;
+ var event = document.createEvent("MouseEvents");
+ event.initMouseEvent("click");
+ link.dispatchEvent(event);
+ window.URL.revokeObjectURL(link.href);
+}
 function _JS_Cursor_SetImage(ptr, length) {
  var binary = "";
  for (var i = 0; i < length; i++) binary += String.fromCharCode(HEAPU8[ptr + i]);
@@ -19143,6 +19158,7 @@ Module.asmLibraryArg = {
  "invoke_vjii": invoke_vjii,
  "invoke_vjiiii": invoke_vjiiii,
  "invoke_vjji": invoke_vjji,
+ "_DownloadFile": _DownloadFile,
  "_JS_Cursor_SetImage": _JS_Cursor_SetImage,
  "_JS_Cursor_SetShow": _JS_Cursor_SetShow,
  "_JS_Eval_ClearInterval": _JS_Eval_ClearInterval,
